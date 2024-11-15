@@ -6,8 +6,8 @@
 | Legajo | Nombre y Apellido       | Github         |
 |--------|-------------------------|----------------|
 | 62317  | Mariano Agopian         | marianoagopian |
-| 62358  | Axel Castro Benza       | AxelCatroo     |
-| 60505  | Lautaro Farías          | LautiFarías    |
+| 62358  | Axel Castro Benza       | AxelCastroo    |
+| 60505  | Lautaro Farias          | LautiFarias    |
 
 
 ## Data
