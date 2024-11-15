@@ -25,7 +25,6 @@ for index, row in df.iterrows():
     })
 
 
-"nro_factura";"codigo_producto";"nro_item";"cantidad"
 df = pd.read_csv('./data/e01_detalle_factura.csv', encoding='latin1', delimiter=';')
 
 # Iterar sobre cada fila del DataFrame y guardar en Redis
@@ -88,7 +87,6 @@ for index, row in df.iterrows():
 
 df = pd.read_csv('./data/e01_telefono.csv', encoding='latin1', delimiter=';')
 
-"codigo_area";"nro_telefono";"tipo";"nro_cliente"
 # Iterar sobre cada fila del DataFrame y guardar en Redis
 for index, row in df.iterrows():
     codigo_area = row['codigo_area']
@@ -104,5 +102,4 @@ for index, row in df.iterrows():
         'nro_cliente': nro_cliente,
     })
 
-
-print('terminó')
+print("Datos cargados en la base de datos")

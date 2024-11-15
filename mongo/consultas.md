@@ -1,4 +1,6 @@
-# 1. Obtener los datos de los clientes junto con sus teléfonos
+# Queries
+
+## 1. Obtener los datos de los clientes junto con sus teléfonos
 
 ```
 db.Cliente.aggregate([
@@ -53,4 +55,34 @@ db.Cliente.aggregate([
     $sort: { nro_cliente: 1},
   },
 ])
+```
+
+# 8. Seleccionar los productos que han sido facturados al menos 1 vez 
+```
+db.Producto.aggregate([
+  {
+    $lookup: {
+      from: "DetalleFactura",
+       localField: "codigo_producto",
+      foreignField: "codigo_producto",
+      as: "has_factura",
+    },
+  },
+  {
+    $match: {
+      has_factura: { $exists: true, $ne: [] },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      codigo_producto: 1,
+      marca: 1,
+      nombre: 1,
+      descripcion: 1,
+      precio: 1,
+      stock: 1,
+    },
+  },
+]);
 ```
