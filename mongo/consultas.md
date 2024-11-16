@@ -185,7 +185,7 @@ db.Cliente.aggregate([
 ]);
 ```
 # 6. Devolver todos los clientes, con la cantidad de facturas que tienen registradas (si no tienen, considerar cantidad en 0).
-
+```
 db.Cliente.aggregate([
 {
   $lookup: {
@@ -210,7 +210,7 @@ db.Cliente.aggregate([
   }
 }
 ]);
-
+```
 # 7. Listar los datos de todas las facturas que hayan sido compradas por el cliente de nombre "Kai" y apellido "Bullock".
 ```
 db.Cliente.aggregate([
