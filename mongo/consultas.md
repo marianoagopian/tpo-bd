@@ -92,7 +92,45 @@ db.Cliente.aggregate([
 
 ```
 # 3. Mostrar cada teléfono junto con los datos del cliente.
-
+```
+db.Cliente.aggregate([
+  {
+    $lookup: {
+      from: "Telefono",
+      localField: "nro_cliente",
+      foreignField: "nro_cliente",
+      as: "telefonos"
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      nro_cliente: 1,
+      nombre: 1,
+      apellido: 1,
+      direccion: 1,
+      activo: 1,
+      telefonos: 1
+    }
+  },
+  {
+    $unwind: "$telefonos"
+  },
+  {
+    $project: {
+      _id: 0,
+      nro_cliente: 1,
+      nombre: 1,
+      apellido: 1,
+      direccion: 1,
+      activo: 1,
+      codigo_area: "$telefonos.codigo_area",
+      nro_telefono: "$telefonos.nro_telefono",
+      tipo: "$telefonos.tipo"
+    }
+  }
+]);
+```
 # 4. Obtener todos los clientes que tengan registrada al menos una factura.
 ```
 db.Cliente.aggregate([
@@ -322,37 +360,10 @@ db.createCollection("FacturasOrdenadas", {
 
 # 12. Se necesita una vista que devuelva todos los productos que aún no han sido facturados.
 ```
-db.createCollection("ProductosNoFacturados", {
-  viewOn: "Producto",
-  pipeline: [
-    {
-      $lookup: {
-        from: "DetalleFactura",
-        localField: "codigo_producto",
-        foreignField: "codigo_producto",
-        as: "facturado"
-      }
-    },
-    {
-      $match: {
-        facturado: { $size: 0 } // Filtra productos que no tienen facturas asociadas
-      }
-    },
-    {
-      $project: {
-        _id: 0,
-        codigo_producto: 1,
-        marca: 1,
-        nombre: 1,
-        descripcion: 1,
-        precio: 1,
-        stock: 1
-      }
-    }
-  ]
-});
 ```
 
 # 13. Implementar la funcionalidad que permita crear nuevos clientes, eliminar y modificar los ya existentes.
+```
+```
 
 # 14. Implementar la funcionalidad que permita crear nuevos productos y modificar los ya existentes. Tener en cuenta que el precio de un producto es sin IVA.
