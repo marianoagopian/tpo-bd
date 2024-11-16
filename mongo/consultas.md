@@ -89,9 +89,10 @@ db.Cliente.aggregate([
     }
   }
 ]);
-
 ```
+
 # 3. Mostrar cada teléfono junto con los datos del cliente.
+
 ```
 db.Cliente.aggregate([
   {
@@ -131,7 +132,9 @@ db.Cliente.aggregate([
   }
 ]);
 ```
+
 # 4. Obtener todos los clientes que tengan registrada al menos una factura.
+
 ```
 db.Cliente.aggregate([
   {
@@ -157,6 +160,7 @@ db.Cliente.aggregate([
   },
 ]);
 ```
+
 # 5. Identificar todos los clientes que no tengan registrada ninguna factura.
 
 ```
@@ -184,7 +188,9 @@ db.Cliente.aggregate([
   },
 ]);
 ```
+
 # 6. Devolver todos los clientes, con la cantidad de facturas que tienen registradas (si no tienen, considerar cantidad en 0).
+
 ```
 db.Cliente.aggregate([
 {
@@ -211,7 +217,9 @@ db.Cliente.aggregate([
 }
 ]);
 ```
+
 # 7. Listar los datos de todas las facturas que hayan sido compradas por el cliente de nombre "Kai" y apellido "Bullock".
+
 ```
 db.Cliente.aggregate([
   {
@@ -238,6 +246,7 @@ db.Cliente.aggregate([
 ```
 
 # 8. Seleccionar los productos que han sido facturados al menos 1 vez.
+
 ```
 db.Producto.aggregate([
   {
@@ -266,6 +275,7 @@ db.Producto.aggregate([
   },
 ]);
 ```
+
 # 9. Listar los datos de todas las facturas que contengan productos de las marcas “Ipsum”.
 
 ```
