@@ -34,6 +34,7 @@ Se utiliza el contenedor de docker que se instala en la práctica de la materia.
 Para cargar la data de los csv dentro de nuestra base de datos Mongo lo que se hizo fue subir los archivos csv a docker con el comando <i>cp</i> de la siguiente manera:
 
 ```
+  (Si el directorio no esta creado : docker exec Mymongo mkdir -p /files)
   docker cp ./data/e01_cliente.csv Mymongo:/files/e01_cliente.csv
   docker cp ./data/e01_detalle_factura.csv Mymongo:/files/e01_detalle_factura.csv
   docker cp ./data/e01_factura.csv Mymongo:/files/e01_factura.csv
@@ -71,7 +72,7 @@ Tras tener los archvivos csv en MongoDB, se deben ejecutar los siguientes comand
 ```
 cd polyglot_system
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate  o en  Windows: venv\Scripts\activate
 pip install fastapi uvicorn pymongo redis pandas
 ```
 
