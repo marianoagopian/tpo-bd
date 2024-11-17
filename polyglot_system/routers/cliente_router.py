@@ -10,10 +10,19 @@ router = APIRouter()
 # Crear un nuevo cliente
 @router.post("/", response_model=Cliente)
 async def create_cliente(cliente: Cliente):
-    existing_cliente = cliente_collection.find_one({"nro_cliente": cliente.nro_cliente})
-    if existing_cliente:
+    cached_cliente = redis_db.hgetall(f"Cliente:{cliente.nro_cliente}")
+    
+    if cached_cliente:
+        # Si el cliente existe en Redis, lanzar un error
         raise HTTPException(status_code=400, detail="Cliente ya existe")
     
+    redis_db.hset(f"Cliente:{cliente.nro_cliente}", mapping={
+        'nombre': cliente.nombre,
+        'apellido': cliente.apellido,
+        'direccion': cliente.direccion,
+        'activo': cliente.activo
+    })
+
     new_cliente = cliente.dict()
     cliente_collection.insert_one(new_cliente)
     return new_cliente
@@ -39,10 +48,18 @@ async def get_cliente(nro_cliente: int):
 # Eliminar un cliente
 @router.delete("/{nro_cliente}")
 async def delete_cliente(nro_cliente: int):
-    result = cliente_collection.delete_one({"nro_cliente": nro_cliente})
-    if result.deleted_count == 0:
+    # Verificar si el cliente está en Redis
+    cached_cliente = redis_db.hgetall(f"Cliente:{nro_cliente}")
+    
+    if not cached_cliente:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
-    return {"message": "Cliente eliminado correctamente"}
+    
+    redis_db.delete(f"Cliente:{nro_cliente}")
+
+    # Luego buscar el cliente en MongoDB para eliminarlo
+    cliente_collection.delete_one({"nro_cliente": nro_cliente})
+    
+    return HTTPException(status_code=204, detail="Cliente eliminado")
 
 # Actualizar un cliente
 @router.put("/{nro_cliente}", response_model=Cliente)
