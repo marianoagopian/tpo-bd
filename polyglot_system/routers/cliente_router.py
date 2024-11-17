@@ -2,7 +2,8 @@ from fastapi import APIRouter, HTTPException
 from typing import List
 from models.cliente import Cliente
 from models.queries import ClienteResponse
-from db.database import cliente_collection
+from db.database import cliente_collection, redis_db
+import json
 
 router = APIRouter()
 
@@ -26,9 +27,13 @@ async def get_all_clientes():
 # Obtener un cliente por nro_cliente
 @router.get("/{nro_cliente}", response_model=Cliente)
 async def get_cliente(nro_cliente: int):
-    cliente = cliente_collection.find_one({"nro_cliente": nro_cliente})
-    if not cliente:
+    # Primero verificar si el cliente está en caché (Redis)
+    cached_cliente = redis_db.hgetall(f"Cliente:{nro_cliente}")
+    
+    if not cached_cliente:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
+
+    cliente = cliente_collection.find_one({"nro_cliente": nro_cliente})
     return cliente
 
 # Eliminar un cliente

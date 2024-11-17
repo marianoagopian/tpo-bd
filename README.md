@@ -10,6 +10,10 @@
 | 60505  | Lautaro Farias          | LautiFarias    |
 
 
+## Consultas
+
+Las queries pedidas se encuentran dentro de la carpeta "consultas"
+
 ## Data
 
 La data fuente del trabajo se encuentra dentro de la carpeta "data".
@@ -59,10 +63,10 @@ Una vez parseado los archivos se importaron los datos de los csv a colecciones d
 ## Redis
 Se utiliza el contenedor de docker que se instala en la práctica de la materia.
 
-Para cargar la data de los csv dentro de nuestra base de datos Redis se utilizó python. Lo que se hizo fue crear el archivo redis_client.py en el cual con la ayuda de la librería pandas, se abren los archivos csv, se itera por las filas y se cargan dentro de la base de datos.
+Los datos se cargan automáticamente una vez inicializada la API
 
 ## API
-Tras tener los archvivos csv en ambas bases de datos, se deben ejecutar los siguientes comandos para generar las dependencias necesarias para el funcionamiento de la API:
+Tras tener los archvivos csv en MongoDB, se deben ejecutar los siguientes comandos para generar las dependencias necesarias para el funcionamiento de la API:
 
 ```
 cd polyglot_system
@@ -75,4 +79,4 @@ Para inicializar la API:
 ```
 uvicorn main:app --reload
 ```
-Tras esto, puede acceder a la misma en: <u>http://127.0.0.1:8000/docs#/</u>
+Tras esto, se puede acceder a la misma en: <u>http://127.0.0.1:8000/docs#/</u>
