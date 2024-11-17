@@ -133,4 +133,4 @@ for index, row in df.iterrows():
 #         'nro_cliente': nro_cliente,
 #     })
 
-print("Datos cargados en la base de datos")
+# print("Datos cargados en la base de datos")
