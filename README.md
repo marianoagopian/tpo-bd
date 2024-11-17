@@ -18,9 +18,15 @@ La data fuente del trabajo se encuentra dentro de la carpeta "data".
 
 La consigna del trabajo se encuentra dentro de la carpeta "doc"
 
+## API
+
+La API se encuentra dentro de la carpeta "polyglot_system"
+
 # Respuestas al Enunciado
 
 ## MongoDB
+Se utiliza el contenedor de docker que se instala en la práctica de la materia.
+
 Para cargar la data de los csv dentro de nuestra base de datos Mongo lo que se hizo fue subir los archivos csv a docker con el comando <i>cp</i> de la siguiente manera:
 
 ```
@@ -50,9 +56,23 @@ Una vez parseado los archivos se importaron los datos de los csv a colecciones d
   mongoimport --host localhost --db mymongo --collection Producto --type csv --file /files/e01_producto_comas.csv --headerline
 ```
 
-Una vez ya cargada la base de datos, se siguió conectandose a la misma y ejecutando las queries que se encuentran en <i>./mongo/consultas.md</i>.
-
 ## Redis
+Se utiliza el contenedor de docker que se instala en la práctica de la materia.
+
 Para cargar la data de los csv dentro de nuestra base de datos Redis se utilizó python. Lo que se hizo fue crear el archivo redis_client.py en el cual con la ayuda de la librería pandas, se abren los archivos csv, se itera por las filas y se cargan dentro de la base de datos.
 
-Una vez ya cargada la base de datos, se siguió conectandose a la misma y ejecutando las queries que se encuentran en <i>./redis/consultas.md</i>.
+## API
+Tras tener los archvivos csv en ambas bases de datos, se deben ejecutar los siguientes comandos para generar las dependencias necesarias para el funcionamiento de la API:
+
+```
+cd polyglot_system
+python3 -m venv venv
+source venv/bin/activate
+pip install fastapi uvicorn pymongo redis
+```
+
+Para inicializar la API:
+```
+uvicorn main:app --reload
+```
+Tras esto, puede acceder a la misma en: <u>http://127.0.0.1:8000/docs#/</u>
