@@ -62,22 +62,24 @@ async def delete_cliente(nro_cliente: int):
 
 # Actualizar un cliente
 @router.put("/{nro_cliente}", response_model=Cliente)
-async def update_cliente(nro_cliente: int, cliente_update: Cliente):
+async def update_cliente(cliente_update: Cliente):
+    # Verificar si el cliente existe en Redis
+    existing_cliente = redis_db.hgetall(f"Cliente:{cliente_update.nro_cliente}")
 
-    # Verificar si el cliente existe
-    existing_cliente = cliente_collection.find_one({"nro_cliente": nro_cliente})
     if not existing_cliente:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
 
-    # Filtrar los campos que tienen valores no nulos
-    update_data = {k: v for k, v in cliente_update.dict().items() if v is not None}
+    # Actualizar en Redis
+    update_data = cliente_update.dict()  # No filtrar campos nulos, actualizar todos
+    redis_db.hset(f"Cliente:{cliente_update.nro_cliente}", mapping=update_data)
 
-    # Actualizar solo los campos proporcionados
+    # Actualizar en MongoDB
     cliente_collection.update_one(
-        {"nro_cliente": nro_cliente},
-        {"$set": update_data}
+        {"nro_cliente": cliente_update.nro_cliente},
+        {"$set": update_data}  # Actualizar todos los campos proporcionados
     )
     
-    # Obtener el cliente actualizado
-    updated_cliente = cliente_collection.find_one({"nro_cliente": nro_cliente})
+    # Obtener el cliente actualizado desde MongoDB
+    updated_cliente = cliente_collection.find_one({"nro_cliente": cliente_update.nro_cliente})
     return updated_cliente
+

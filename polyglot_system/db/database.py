@@ -85,26 +85,36 @@ for index, row in df.iterrows():
 #         'nro_cliente': nro_cliente
 #     })
 
-# df = pd.read_csv('./data/e01_producto.csv', encoding='latin1', delimiter=';')
+# Obtener todas las claves que empiecen con "Cliente:"
+keys = redis_db.keys("Producto:*")
 
-# # Iterar sobre cada fila del DataFrame y guardar en Redis
-# for index, row in df.iterrows():
-#     codigo_producto = row['codigo_producto']
-#     marca = row['marca']
-#     nombre = row['nombre']
-#     descripcion = row['descripcion']
-#     precio = row['precio']
-#     stock = row['stock']
+# Eliminar todas esas claves
+if keys:
+    redis_db.delete(*keys)
+
+df = pd.read_csv('./../data/e01_producto.csv', encoding='latin1', delimiter=';')
+
+# Iterar sobre cada fila del DataFrame y guardar en Redis
+for index, row in df.iterrows():
+    codigo_producto = row['codigo_producto']
+    marca = row['marca']
+    nombre = row['nombre']
+    descripcion = row['descripcion']
+    precio = row['precio']
+    stock = row['stock']
     
-#     # Usar un hash para almacenar los datos del cliente
-#     cliente_key = f"producto:{codigo_producto}"
-#     r.hset(cliente_key, mapping={
-#         'marca': marca,
-#         'nombre': nombre,
-#         'descripcion': descripcion,
-#         'precio': precio,
-#         'stock': stock
-#     })
+    # Usar un hash para almacenar los datos del cliente
+    cliente_key = f"Producto:{codigo_producto}"
+    redis_db.hset(cliente_key, mapping={
+        'marca': marca,
+        'nombre': nombre,
+        'descripcion': descripcion,
+        'precio': precio,
+        'stock': stock
+    })
+
+# for key in redis_db.keys("Producto:*"):
+#     print(key.decode(), redis_db.hgetall(key))
 
 # df = pd.read_csv('./data/e01_telefono.csv', encoding='latin1', delimiter=';')
 
