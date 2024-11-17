@@ -3,7 +3,6 @@ from typing import List
 from models.cliente import Cliente
 from models.queries import ClienteResponse
 from db.database import cliente_collection, redis_db
-import json
 
 router = APIRouter()
 
@@ -64,6 +63,7 @@ async def delete_cliente(nro_cliente: int):
 # Actualizar un cliente
 @router.put("/{nro_cliente}", response_model=Cliente)
 async def update_cliente(nro_cliente: int, cliente_update: Cliente):
+
     # Verificar si el cliente existe
     existing_cliente = cliente_collection.find_one({"nro_cliente": nro_cliente})
     if not existing_cliente:

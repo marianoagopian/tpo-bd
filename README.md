@@ -72,7 +72,7 @@ Tras tener los archvivos csv en MongoDB, se deben ejecutar los siguientes comand
 cd polyglot_system
 python3 -m venv venv
 source venv/bin/activate
-pip install fastapi uvicorn pymongo redis
+pip install fastapi uvicorn pymongo redis pandas
 ```
 
 Para inicializar la API:
