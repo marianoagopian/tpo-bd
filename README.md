@@ -12,7 +12,7 @@
 
 ## Consultas
 
-Las queries pedidas se encuentran dentro de la carpeta "consultas"
+Las queries, vistas y funcionalidades pedidas se encuentran dentro de la carpeta "consultas"
 
 ## Data
 
@@ -34,7 +34,6 @@ Se utiliza el contenedor de docker que se instala en la práctica de la materia.
 Para cargar la data de los csv dentro de nuestra base de datos Mongo lo que se hizo fue subir los archivos csv a docker con el comando <i>cp</i> de la siguiente manera:
 
 ```
-  (Si el directorio no esta creado : docker exec Mymongo mkdir -p /files)
   docker cp ./data/e01_cliente.csv Mymongo:/files/e01_cliente.csv
   docker cp ./data/e01_detalle_factura.csv Mymongo:/files/e01_detalle_factura.csv
   docker cp ./data/e01_factura.csv Mymongo:/files/e01_factura.csv
@@ -70,9 +69,16 @@ Los datos se cargan automáticamente una vez inicializada la API
 Tras tener los archvivos csv en MongoDB, se deben ejecutar los siguientes comandos para generar las dependencias necesarias para el funcionamiento de la API:
 
 ```
+# Navegar al directorio del proyecto
 cd polyglot_system
+# Crear un entorno virtual en Python
 python3 -m venv venv
-source venv/bin/activate  o en  Windows: venv\Scripts\activate
+# Activar el entorno virtual:
+# En Mac/Linux:
+source venv/bin/activate
+# En Windows:
+venv\Scripts\activate
+# Instalar las dependencias necesarias
 pip install fastapi uvicorn pymongo redis pandas
 ```
 

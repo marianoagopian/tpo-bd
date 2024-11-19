@@ -369,11 +369,53 @@ db.createCollection("FacturasOrdenadas", {
 ```
 
 # 12. Se necesita una vista que devuelva todos los productos que aún no han sido facturados.
+
 ```
+db.createView("ProductosNoFacturados", "Producto", [
+  {
+    $lookup: {
+      from: "DetalleFactura",
+      localField: "codigo_producto",
+      foreignField: "DetalleFactura.codigo_producto",
+      as: "facturas",
+    },
+  },
+  {
+    $match: {
+      facturas: [],
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      codigo_producto: 1,
+      marca: 1,
+      nombre: 1,
+      descripcion: 1,
+      precio: 1,
+      stock: 1,
+    },
+  },
+]);
 ```
 
 # 13. Implementar la funcionalidad que permita crear nuevos clientes, eliminar y modificar los ya existentes.
-```
-```
+
+
+| **Método** | **Endpoint**               | **Descripción**   | **Parámetros**                                                                                 |
+|------------|----------------------------|-------------------------------------|-----------------------------------------------------------------------------------------------|
+| **GET**    | `/clientes`               | Obtiene la lista de todos los clientes | -  |
+| **POST**   | `/clientes`               | Crea un nuevo cliente               | `nro_cliente` (int): Identificador del cliente. <br> `nombre` (string): Nombre del cliente. <br> `apellido` (string): Apellido del cliente. <br> `direccion` (string): Dirección del cliente. <br> `activo` (int): Estado del cliente |
+| **GET**    | `/clientes/{nro_cliente}` | Retorna un cliente                  | `nro_cliente` (int): Identificador del cliente.                                          |
+| **DELETE** | `/clientes/{nro_cliente}` | Elimina un cliente                  | `nro_cliente` (int): Identificador del cliente.                                          |
+| **PUT**    | `/clientes/{nro_cliente}` | Actualiza un cliente                | `nro_cliente` (int): Identificador del cliente. <br> `nombre` (string): Nombre actualizado. <br> `apellido` (string): Apellido actualizado. <br> `direccion` (string): Dirección actualizada. <br> `activo` (int): Estado actualizado del cliente|
 
 # 14. Implementar la funcionalidad que permita crear nuevos productos y modificar los ya existentes. Tener en cuenta que el precio de un producto es sin IVA.
+
+| **Método** | **Endpoint**               | **Descripción**   | **Parámetros**                                                                               |
+|------------|----------------------------|-------------------------------------|-----------------------------------------------------------------------------------------------|
+| **GET**    | `/productos`               | Obtiene la lista de todos los productos | -  |
+| **POST**   | `/productos`               | Crea un nuevo producto               | `codigo_producto` (int): Identificador del producto. <br> `marca` (string): Marca del producto. <br> `nombre` (string): Nombre del producto. <br> `descripcion` (string): Descripción del producto. <br> `precio` (float): Precio del producto. <br> `stock` (int): Cantidad en stock del producto. |
+| **GET**    | `/productos/{codigo_producto}` | Retorna un producto                  | `codigo_producto` (int): Identificador del producto.                                          |
+| **DELETE** | `/productos/{codigo_producto}` | Elimina un producto                  | `codigo_producto` (int): Identificador del producto.                                          |
+| **PUT**    | `/productos/{codigo_producto}` | Actualiza un producto                | `codigo_producto` (int): Identificador del producto. <br> `marca` (string): Marca actualizada. <br> `nombre` (string): Nombre actualizado. <br> `descripcion` (string): Descripción actualizada. <br> `precio` (float): Precio actualizado. <br> `stock` (int): Cantidad actualizada en stock. |
